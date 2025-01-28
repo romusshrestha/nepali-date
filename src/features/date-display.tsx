@@ -6,6 +6,8 @@ import { Calendar, Clock } from "lucide-react"
 import { useState } from "react";
 import getData from "~libs/getData";
 import getNepaliDate from "~libs/getNepaliDate";
+import getNepaliDay from "~libs/getNepaliDay";
+import getBsMonth from "~libs/getBsMonth";
 // import { Inter } from "next/font/google"
 
 // const inter = Inter({ subsets: ["latin"] })
@@ -16,18 +18,26 @@ interface Event {
 }
 
 export default function DateDisplay() {
-  const [day, setDay] = useState('');
-  const getTithi = async () => {
-    const tithi = await getData('01','1','2081');
+  const [tithi, setTithi] = useState('');
+  const [nepaliDay, setNepaliDay] = useState('');
+  const [nepaliMonth, setNepaliMonth] = useState('');
+  const { bsDate, year, month, date, adDate } = getNepaliDate();
+  const getDateDatas = async () => {
+    const fetchedTithi = await getData('01', '1', '2081');
+    console.log(month);
+    const nepMonth= month
+    console.log("nepmonth",nepMonth);
+    const convertedMonth= getBsMonth(nepMonth);
+    console.log(convertedMonth);
+    
+    const convertedDay = getNepaliDay();
     console.log(tithi);
-    setDay(tithi);
+    setNepaliMonth(convertedMonth);
+    setNepaliDay(convertedDay);
+    setTithi(fetchedTithi);
   }
-  getNepaliDate();
-  getTithi();
-  // Note: You'll need to implement the logic for date conversion and fetching events
-  const currentNepaliDate = "२०८० जेठ १५" // Example date, replace with actual Nepali date
-  const currentGregorianDate = "May 29, 2023" // Example date, replace with actual Gregorian date
-  const dayOfWeek = "सोमबार" // Example day, replace with actual day of week in Nepali
+  getDateDatas();
+
 
   // Example events, replace with actual events for the day
   const events: Event[] = [
@@ -41,10 +51,10 @@ export default function DateDisplay() {
       {/* <div className={inter.className}> */}
       <Card className="w-80 bg-red-50 rounded-lg overflow-hidden mx-2 my-2">
         <CardHeader className="bg-red-800 text-white">
-          <CardTitle className="text-center font-bold text-2xl font-sans">{currentNepaliDate}</CardTitle>
-          <p className="text-center text-sm font-sans">{currentGregorianDate}</p>
-          <p className="text-center text-lg mt-2 font-sans">{dayOfWeek}</p>
-          <p className="text-center text-lg mt-2 font-sans">{day}</p>
+          <CardTitle className="text-center font-bold text-2xl font-sans"> {nepaliMonth} {bsDate[2]} {bsDate[0]}</CardTitle>
+          <p className="text-center text-sm font-sans">{adDate}</p>
+          <p className="text-center text-lg mt-2 font-sans">{nepaliDay}</p>
+          <p className="text-center text-lg mt-2 font-sans">{tithi}</p>
         </CardHeader>
         <CardContent className="p-4">
           <div className="flex items-center mb-4">
