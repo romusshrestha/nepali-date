@@ -1,15 +1,13 @@
 import { useState } from "react";
-import { CountButton } from "~features/count-button"
-import Tithi from "~features/tithi";
+import DateDisplay from "~features/date-display";
 
 import "~style.css"
 
 function IndexPopup() {
   
   return ( 
-    <div className="flex items-center justify-center h-16 w-40 flex-col ">
-      <CountButton />
-      <Tithi/>
+    <div className="flex items-center justify-center h-auto w-96 flex-col">
+      <DateDisplay/>
     </div>
   )
 }
