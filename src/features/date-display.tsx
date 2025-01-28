@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~components/ui/card"
 import { Calendar, Clock } from "lucide-react"
 import { useState } from "react";
 import getData from "~libs/getData";
+import getNepaliDate from "~libs/getNepaliDate";
 // import { Inter } from "next/font/google"
 
 // const inter = Inter({ subsets: ["latin"] })
@@ -17,10 +18,11 @@ interface Event {
 export default function DateDisplay() {
   const [day, setDay] = useState('');
   const getTithi = async () => {
-    const tithi = await getData('01');
+    const tithi = await getData('01','1','2081');
     console.log(tithi);
     setDay(tithi);
   }
+  getNepaliDate();
   getTithi();
   // Note: You'll need to implement the logic for date conversion and fetching events
   const currentNepaliDate = "२०८० जेठ १५" // Example date, replace with actual Nepali date
