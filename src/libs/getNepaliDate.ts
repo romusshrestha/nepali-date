@@ -1,5 +1,4 @@
 import { adToBs } from "@sbmdkl/nepali-date-converter";
-import { log } from "console";
 
 export default  function getNepaliDate() {
     try {
