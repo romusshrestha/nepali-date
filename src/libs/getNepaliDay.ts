@@ -1,31 +1,31 @@
 export default function getNepaliDay (){
     const date = new Date();
     const englishDay = date.toLocaleDateString("en-US", { weekday: "long" })
-
+let nepaliDay;
 switch (englishDay) {
   case "Sunday":
-    setnepday("आइतबार")
+    nepaliDay="आइतबार"
     break
   case "Monday":
-    setnepday("सोमबार")
+    nepaliDay="सोमबार"
     break
   case "Tuesday":
-    setnepday("मंगलबार")
+    nepaliDay="मंगलबार"
     break
   case "Wednesday":
-    setnepday("बुधबार")
+    nepaliDay="बुधबार"
     break
   case "Thursday":
-    setnepday("बिहीबार")
+    nepaliDay="बिहीबार"
     break
   case "Friday":
-    setnepday("शुक्रबार")
+    nepaliDay="शुक्रबार"
     break
   case "Saturday":
-    setnepday("शनिबार")
+    nepaliDay="शनिबार"
     break
   default:
-    setnepday("")
     break
 }
+return nepaliDay;
 }
