@@ -8,7 +8,7 @@ export default  function getNepaliDate() {
         today.getDate();
         console.log(today.toString());
         const year= today.getFullYear().toString();
-        const month= today.getMonth().toString()+1;
+        const month= (today.getMonth()+1).toString();
         const date= today.getDate().toString();
         const adDate= `${year}-${month}-${date}`;
         console.log(today.getMonth().toString());
@@ -18,7 +18,7 @@ export default  function getNepaliDate() {
         console.log(adToBsDate);
         const bsDate = adToBsDate.toString().split("-");
         console.log(bsDate);
-        return bsDate;
+        return {bsDate,year,month,date,adDate};
         
         
     } catch (e) {
