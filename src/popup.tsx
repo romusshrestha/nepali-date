@@ -6,7 +6,7 @@ import "~style.css"
 function IndexPopup() {
   
   return ( 
-    <div className="flex items-center justify-center h-auto w-96 flex-col">
+    <div className=" ">
       <DateDisplay/>
     </div>
   )
