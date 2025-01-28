@@ -1,9 +1,31 @@
-export default async function getData (engDate:string) {
-    const data = await import('../data/2081/1.json', { assert: { type: 'json' } });
-    console.log(data.days.find((day) => day.e === engDate));
-    // Access the JSON content
-    const days = data.days.find((day) => day.e === engDate)
-    console.log(days.t);
+export default async function getData(nepDate: string, nepMonth: string, nepYear: string) {
+    try {
+        // Dynamically construct the URL
+        const url = `https://steins07.github.io/bs-date-data/data/${nepYear}/${nepMonth}.json`;
 
-    return days.t
+        // Fetch the JSON data
+        const response = await fetch(url);
+
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error(`Failed to fetch data: ${response.statusText}`);
+        }
+
+        // Parse the JSON data
+        const data = await response.json();
+        // Find the matching day
+        const day = data.days.find((day) => day.e === nepDate);
+
+        // Log and return the data if found
+        if (day) {
+            console.log(day.t);
+            return day.t;
+        } else {
+            console.error(`Date ${nepDate} not found in the data.`);
+            return null;
+        }
+    } catch (error) {
+        console.error(`Error fetching data for ${nepMonth}/${nepYear}:`, error);
+        return null;
+    }
 }
