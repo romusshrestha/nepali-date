@@ -1,3 +1,4 @@
+
 export default async function getData(nepDate: string, nepMonth: string, nepYear: string) {
     try {
         // Dynamically construct the URL
@@ -13,13 +14,21 @@ export default async function getData(nepDate: string, nepMonth: string, nepYear
 
         // Parse the JSON data
         const data = await response.json();
+        console.log(data);
+       
+
         // Find the matching day
         const day = data.days.find((day) => day.e === nepDate);
-
         // Log and return the data if found
         if (day) {
-            console.log(day.t);
-            return day.t;
+            const bratabandhaData =data.bratabandha[0];
+            const marriageData=data.marriage[0];
+            const holidayData=data.holiFest;
+            console.log("holiday",holidayData[0])
+           
+            // console.log("holiday data",holidayData);
+            const singleDayData= day;
+            return {singleDayData,bratabandhaData,marriageData};
         } else {
             console.error(`Date ${nepDate} not found in the data.`);
             return null;
