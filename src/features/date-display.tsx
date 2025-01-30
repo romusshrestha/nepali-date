@@ -1,21 +1,14 @@
 //ui
 
 import { Card, CardContent, CardHeader, CardTitle } from "~components/ui/card"
-// import { Separator } from "@/components/ui/separator"
-import { Calendar, Clock, Loader, Loader2Icon, LoaderCircle, LoaderIcon, LoaderPinwheel } from "lucide-react"
+import { Calendar, LoaderPinwheel } from "lucide-react"
 import { useEffect, useState } from "react";
-import getData from "~libs/getData";
 import getNepaliDate from "~libs/getNepaliDate";
-import getNepaliDay from "~libs/getNepaliDay";
-import getBsMonth from "~libs/getBsMonth";
 // import { Inter } from "next/font/google"
 
 // const inter = Inter({ subsets: ["latin"] })
 
-interface Event {
-  time: string
-  title: string
-}
+
 interface IDay {
   n: string;
   e: string;
@@ -36,8 +29,11 @@ interface INepaliDate {
   bratabandhaData: string;
   marriageData: string;
 }
+interface IDateDisplayProps {
+  isHoliday: boolean
+}
 
-export default function DateDisplay() {
+export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
   const [nepaliDate, setNepaliDate] = useState<INepaliDate | null>(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -56,13 +52,12 @@ export default function DateDisplay() {
 
 
 
-  // Example events, replace with actual events for the day
 
 
   if (!nepaliDate) {
     return (<>
       <Card className="w-80 bg-red-50 rounded-lg overflow-hidden mx-2 my-2">
-        <CardHeader className="bg-red-800 text-white ">
+        <CardHeader className="bg-red-800 text-white">
           <CardTitle className="text-center font-bold text-2xl font-sans  gap-2">
             Loading Data
             <LoaderPinwheel className="ml-2 h-6 w-6  animate-spin duration-1000 inline" />
@@ -75,23 +70,51 @@ export default function DateDisplay() {
   return (
     <div >
       {/* <div className={inter.className}> */}
-      <Card className="w-80 bg-red-50 rounded-lg overflow-hidden mx-2 my-2">
-        <CardHeader className="bg-red-800 text-white">
+      <Card className={`w-80  rounded-lg shadow-lg overflow-hidden mx-2 my-2 ${isHoliday ? "bg-red-50" : "bg-gradient-to-r from-emerald-500 to-green-600"}`}>
+        <CardHeader className={` text-white ${isHoliday ? "bg-red-800" : "bg-gradient-to-r from-emerald-800 to-green-800"}`}>
           <CardTitle className="text-center font-bold text-2xl font-sans"> {nepaliDate.nepaliMonth} {nepaliDate.singleDayData.n}, {nepaliDate.bsDate[0]}</CardTitle>
           <p className="text-center text-sm font-sans">{nepaliDate.englishMonth.slice(0, 3)} {nepaliDate.enDate}, {nepaliDate.enYear}</p>
           <p className="text-center text-sm mt-2 font-sans">{nepaliDate.singleDayData.t}</p>
           <p className="text-center text-lg mt-2 font-sans">{nepaliDate.nepaliDay}</p>
         </CardHeader>
-        <CardContent className="p-4">
-          <div className="flex items-center mb-2">
-            <Calendar className="mr-2 h-5 w-5 text-red-800" />
+        <CardContent className={`p-4 ${isHoliday ? "" : "bg-gradient-to-b from-emerald-50 to-green-100"}`}>
+
+          {/* <div className="flex space-x-2 mb-4">
+            <Button
+              variant={activeTab === "events" ? "default" : "outline"}
+              onClick={() => setActiveTab("events")}
+              className="flex-1"
+            >
+              <Calendar className="w-4 h-4 mr-2" />
+              आजका पर्वहरू
+            </Button>
+            <Button
+              variant={activeTab === "auspicious" ? "default" : "outline"}
+              onClick={() => setActiveTab("auspicious")}
+              className="flex-1"
+            >
+              <Clock className="w-4 h-4 mr-2" />
+              ब्रतबन्ध
+            </Button>
+            <Button
+              variant={activeTab === "marriage" ? "default" : "outline"}
+              onClick={() => setActiveTab("marriage")}
+              className="flex-1"
+            >
+              <Heart className="w-4 h-4 mr-2" />
+              विवाह
+            </Button>
+          </div> */}
+
+          <div className={`flex items-center mb-2 ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
+            <Calendar className="mr-2 h-5 w-5 " />
             <h2 className="text-lg font-semibold font-sans">आजका पर्वहरू</h2>
           </div>
           {nepaliDate.singleDayData.f ? (
             <ul className="px-3 space-y-3 text-sm">
               {nepaliDate.singleDayData.f.split(", ").map((festival, index) => (
                 <li key={index} className="flex items-start">
-                  <span className="font-semibold text-red-800">
+                  <span className={`font-semibold ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
                     •
                   </span>
                   <span className="ml-2">{festival}</span>
@@ -102,15 +125,15 @@ export default function DateDisplay() {
             <p className="text-center text-gray-500 italic font-sans"> आज कुनै पर्वहरू छैन</p>
           )}
 
-          <div className="flex items-center mb-2 mt-2">
-            <Calendar className="mr-2 h-5 w-5 text-red-800" />
+          <div className={`flex items-center my-2 ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
+            <Calendar className="mr-2 h-5 w-5 " />
             <h2 className="text-lg font-semibold font-sans">ब्रतबन्ध मुर्हुतहरू</h2>
           </div>
           {nepaliDate.bratabandhaData ? (
 
             <ul className="px-3 text-sm space-y-3">
               <li className="flex items-start">
-                <span className="font-semibold text-red-800">
+                <span className={`font-semibold ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
                   •
                 </span>
                 <span className="ml-2">
@@ -122,15 +145,15 @@ export default function DateDisplay() {
             <p className="text-center text-gray-500 italic font-sans"> आज कुनै पर्वहरूछैन</p>
           )}
 
-          <div className="flex items-center mb-2 mt-2">
-            <Calendar className="mr-2 h-5 w-5 text-red-800" />
+          <div className={`flex items-center my-2 ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
+            <Calendar className="mr-2 h-5 w-5 " />
             <h2 className="text-lg font-semibold font-sans">विवाह मुर्हुतहरू</h2>
           </div>
-          {nepaliDate.marriageData? (
+          {nepaliDate.marriageData ? (
 
             <ul className="px-3 text-sm space-y-3">
               <li className="flex items-start">
-                <span className="font-semibold text-red-800">
+                <span className={`font-semibold ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
                   •
                 </span>
                 <span className="ml-2">
