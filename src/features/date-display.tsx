@@ -4,6 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "~components/ui/card"
 import { Calendar, LoaderPinwheel } from "lucide-react"
 import { useEffect, useState } from "react";
 import getNepaliDate from "~libs/getNepaliDate";
+import Button from "~components/ui/button";
+import DailyEvent from "./daily-event";
+import Bratabandha from "./bratabandha-date";
+import Marrige from "./marrige-date";
 // import { Inter } from "next/font/google"
 
 // const inter = Inter({ subsets: ["latin"] })
@@ -17,7 +21,7 @@ interface IDay {
   h: boolean;
   d: number
 }
-interface INepaliDate {
+export interface INepaliDate {
   bsDate: string[];
   enYear: string;
   enMonth: string;
@@ -32,9 +36,11 @@ interface INepaliDate {
 interface IDateDisplayProps {
   isHoliday: boolean
 }
+export type TabType = "events" | "bratabandha" | "marriage"
 
 export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
   const [nepaliDate, setNepaliDate] = useState<INepaliDate | null>(null);
+  const [activeTab, setActiveTab] = useState<TabType>("events")
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,6 +55,7 @@ export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
     }
     fetchData();
   }, [])
+
 
 
 
@@ -79,91 +86,19 @@ export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
         </CardHeader>
         <CardContent className={`p-4 ${isHoliday ? "" : "bg-gradient-to-b from-emerald-50 to-green-100"}`}>
 
-          {/* <div className="flex space-x-2 mb-4">
-            <Button
-              variant={activeTab === "events" ? "default" : "outline"}
-              onClick={() => setActiveTab("events")}
-              className="flex-1"
-            >
-              <Calendar className="w-4 h-4 mr-2" />
-              आजका पर्वहरू
-            </Button>
-            <Button
-              variant={activeTab === "auspicious" ? "default" : "outline"}
-              onClick={() => setActiveTab("auspicious")}
-              className="flex-1"
-            >
-              <Clock className="w-4 h-4 mr-2" />
-              ब्रतबन्ध
-            </Button>
-            <Button
-              variant={activeTab === "marriage" ? "default" : "outline"}
-              onClick={() => setActiveTab("marriage")}
-              className="flex-1"
-            >
-              <Heart className="w-4 h-4 mr-2" />
-              विवाह
-            </Button>
-          </div> */}
-
-          <div className={`flex items-center mb-2 ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
-            <Calendar className="mr-2 h-5 w-5 " />
-            <h2 className="text-lg font-semibold font-sans">आजका पर्वहरू</h2>
+          <div className="flex space-x-2 mb-4">
+            <Button setActiveTab={setActiveTab} tab="events" activeTab={activeTab} text="आजका पर्व" isHoliday={isHoliday}/>
+            <Button setActiveTab={setActiveTab} tab="bratabandha" activeTab={activeTab} text="ब्रतबन्ध" isHoliday={isHoliday}/>
+            <Button setActiveTab={setActiveTab} tab="marriage" activeTab={activeTab} text="विवाह" isHoliday={isHoliday}/>
           </div>
-          {nepaliDate.singleDayData.f ? (
-            <ul className="px-3 space-y-3 text-sm">
-              {nepaliDate.singleDayData.f.split(", ").map((festival, index) => (
-                <li key={index} className="flex items-start">
-                  <span className={`font-semibold ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
-                    •
-                  </span>
-                  <span className="ml-2">{festival}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-center text-gray-500 italic font-sans"> आज कुनै पर्वहरू छैन</p>
-          )}
 
-          <div className={`flex items-center my-2 ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
-            <Calendar className="mr-2 h-5 w-5 " />
-            <h2 className="text-lg font-semibold font-sans">ब्रतबन्ध मुर्हुतहरू</h2>
-          </div>
-          {nepaliDate.bratabandhaData ? (
+          {activeTab === "events" && (<DailyEvent isHoliday={isHoliday} nepaliDate={nepaliDate}/>)}
+          {activeTab === "bratabandha" && (<Bratabandha isHoliday={isHoliday} nepaliDate={nepaliDate}/>)}
+          {activeTab === "marriage" && (<Marrige isHoliday={isHoliday} nepaliDate={nepaliDate}/>)}
 
-            <ul className="px-3 text-sm space-y-3">
-              <li className="flex items-start">
-                <span className={`font-semibold ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
-                  •
-                </span>
-                <span className="ml-2">
-                  {nepaliDate.bratabandhaData}
-                </span>
-              </li>
-            </ul>
-          ) : (
-            <p className="text-center text-gray-500 italic font-sans"> आज कुनै पर्वहरूछैन</p>
-          )}
+         
 
-          <div className={`flex items-center my-2 ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
-            <Calendar className="mr-2 h-5 w-5 " />
-            <h2 className="text-lg font-semibold font-sans">विवाह मुर्हुतहरू</h2>
-          </div>
-          {nepaliDate.marriageData ? (
-
-            <ul className="px-3 text-sm space-y-3">
-              <li className="flex items-start">
-                <span className={`font-semibold ${isHoliday ? "text-red-800" : "text-emerald-700"}`}>
-                  •
-                </span>
-                <span className="ml-2">
-                  {nepaliDate.marriageData}
-                </span>
-              </li>
-            </ul>
-          ) : (
-            <p className="text-center text-gray-500 italic font-sans"> आज कुनै पर्वहरूछैन</p>
-          )}
+    
         </CardContent>
         <div className="absolute inset-0 -z-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCI+CjxyZWN0IHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgZmlsbD0iI2ZmZWJlZSI+PC9yZWN0Pgo8cGF0aCBkPSJNMzAgMzBMMzAgMEw2MCAzMEw2MCA2MEwzMCAzMEwwIDYwTDAgMzBMMzAgMFoiIGZpbGw9IiNmZmQ1ZDUiPjwvcGF0aD4KPC9zdmc+')] opacity-10" />
       </Card>
