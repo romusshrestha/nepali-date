@@ -27,7 +27,7 @@ const getTabIcon = (tab: TabType) => {
 export default function Button({ text, isHoliday, activeTab, tab, setActiveTab }: IButtonProps) {
     return (
         <button
-            className={` flex-1 text-xs border rounded-lg px-3 py-1 hover:opacity-85 duration-200 ${isHoliday ? (activeTab === tab ? "bg-red-400 text-white border-red-900 " : "bg-red-300 opacity-55 ") : (activeTab === tab ? "bg-emerald-400 border-emerald-800 " : "bg-emerald-300 opacity-55") }`}
+            className={` flex-1 text-xs border rounded-lg px-3 py-1 hover:opacity-85 duration-200 ${isHoliday ? (activeTab === tab ? "bg-red-400 text-white border-red-900 " : "bg-red-300 opacity-55 ") : (activeTab === tab ? "bg-emerald-400 border-emerald-800 " : "bg-emerald-300 opacity-55") }  whitespace-nowrap overflow- visible text-ellipsis`}
             onClick={() => setActiveTab(tab)}
         >
             {getTabIcon(tab)}  {text}
