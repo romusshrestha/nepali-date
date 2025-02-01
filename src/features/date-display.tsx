@@ -1,7 +1,7 @@
 //ui
 
 import { Card, CardContent, CardHeader, CardTitle } from "~components/ui/card"
-import { Calendar, LoaderPinwheel } from "lucide-react"
+import { ChevronLeft, ChevronRight, LoaderPinwheel } from "lucide-react"
 import { useEffect, useState } from "react";
 import getNepaliDate from "~libs/getNepaliDate";
 import Button from "~components/ui/button";
@@ -76,10 +76,26 @@ export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
       <Card className={`w-80  rounded-lg shadow-lg overflow-hidden mx-2 my-2 ${isHoliday ? "bg-red-50" : "bg-gradient-to-r from-emerald-500 to-green-600"}`}>
         {/* card header */}
         <CardHeader className={` text-white ${isHoliday ? "bg-red-800" : "bg-gradient-to-r from-emerald-800 to-green-800"}`}>
-          <CardTitle className="text-center font-bold text-2xl font-sans"> {nepaliDate.nepaliMonth} {nepaliDate.singleDayData.n}, {nepaliDate.bsDate[0]}</CardTitle>
-          <p className="text-center text-sm font-sans">{nepaliDate.englishMonth.slice(0, 3)} {nepaliDate.enDate}, {nepaliDate.enYear}</p>
-          <p className="text-center text-sm mt-2 font-sans">{nepaliDate.singleDayData.t}</p>
-          <p className="text-center text-lg mt-2 font-sans">{nepaliDate.nepaliDay}</p>
+          <div className="flex items-center justify-between">
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <div className="flex-grow text-center">
+              <CardTitle className="text-center font-bold text-2xl font-sans"> {nepaliDate.nepaliMonth} {nepaliDate.singleDayData.n}, {nepaliDate.bsDate[0]}</CardTitle>
+              <p className="text-center text-sm font-sans">{nepaliDate.englishMonth.slice(0, 3)} {nepaliDate.enDate}, {nepaliDate.enYear}</p>
+              <p className="text-center text-sm mt-2 font-sans">{nepaliDate.singleDayData.t}</p>
+              <p className="text-center text-lg mt-2 font-sans">{nepaliDate.nepaliDay}</p>
+            </div>
+            <button
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
+              aria-label="Next"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
         </CardHeader>
 
         {/* card content */}
