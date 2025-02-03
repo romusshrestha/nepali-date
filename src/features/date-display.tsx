@@ -40,23 +40,44 @@ export type TabType = "events" | "bratabandha" | "marriage"
 
 export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
   const [nepaliDate, setNepaliDate] = useState<INepaliDate | null>(null);
-  const [activeTab, setActiveTab] = useState<TabType>("events")
+  const [activeTab, setActiveTab] = useState<TabType>("events");
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const dateData = await getNepaliDate();
-        if (dateData) {
-          console.log("Date Data: ", dateData);
-          setNepaliDate(dateData);
-        }
-      } catch (error) {
-        console.error("Error fetching Nepali date:", error)
-      }
-    }
-    fetchData();
+fetchData();
+// fetchData(currentDate);
   }, [])
+  const fetchData = async () => {
+    setIsLoading(true);
 
-  if (!nepaliDate) {
+    // const fetchData = async (date: Date) => {
+    try {
+      const dateData = await getNepaliDate();
+      // const dateData = await getNepaliDate(date);
+      if (dateData) {
+        console.log("Date Data: ", dateData);
+        setNepaliDate(dateData);
+      }
+    } catch (error) {
+      console.error("Error fetching Nepali date:", error)
+    }
+    finally {
+      setIsLoading(false);
+    }
+  }
+  const handlePreviousDay = () => {
+    const previousDay = new Date(currentDate);
+    previousDay.setDate(currentDate.getDate() - 1);
+    setCurrentDate(previousDay);
+  };
+
+  const handleNextDay = () => {
+    const nextDay = new Date(currentDate);
+    nextDay.setDate(currentDate.getDate() + 1);
+    setCurrentDate(nextDay);
+  };
+
+  if (!nepaliDate || isLoading) {
     return (<>
       <Card className="w-80 bg-red-50 rounded-lg overflow-hidden mx-2 my-2">
         <CardHeader className="bg-red-800 text-white">
@@ -80,6 +101,7 @@ export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
             <button
               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
               aria-label="Previous"
+              onClick={handlePreviousDay}
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -92,6 +114,7 @@ export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
             <button
               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-colors"
               aria-label="Next"
+              onClick={handleNextDay}
             >
               <ChevronRight className="h-4 w-4" />
             </button>
