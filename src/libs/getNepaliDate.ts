@@ -4,6 +4,7 @@ import getBsMonth from "./getBsMonth";
 import getData from "./getData";
 
 export default async function getNepaliDate() {
+// export default async function getNepaliDate(date: Date=new Date()) {
     try {
 
 
