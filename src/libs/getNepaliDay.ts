@@ -1,6 +1,5 @@
-export default function getNepaliDay (){
-  const today = new Date();
-  const englishDay = today.toLocaleDateString("en-US", { weekday: "long" })
+export default function getNepaliDay (date: Date=new Date()) {
+  const englishDay = date.toLocaleDateString("en-US", { weekday: "long" })
 
   const nepaliDays = {
     Sunday: "आइतबार",
