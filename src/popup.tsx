@@ -22,7 +22,8 @@ function IndexPopup() {
     }, [])
   return ( 
     <div className={`p-0.5 ${isHoliday?"bg-red-100":"bg-gradient-to-r from-emerald-100 to-green-100"}` }> 
-      <DateDisplay isHoliday={isHoliday}/>
+      <DateDisplay />
+      {/* <DateDisplay isHoliday={isHoliday}/> */}
     </div>
   )
 }
