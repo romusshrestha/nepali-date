@@ -33,30 +33,31 @@ export interface INepaliDate {
   bratabandhaData: string;
   marriageData: string;
 }
-interface IDateDisplayProps {
-  isHoliday: boolean
-}
+// interface IDateDisplayProps {
+//   isHoliday: boolean
+// }
+// { isHoliday }: IDateDisplayProps
 export type TabType = "events" | "bratabandha" | "marriage"
 
-export default function DateDisplay({ isHoliday }: IDateDisplayProps) {
+export default function DateDisplay() {
   const [nepaliDate, setNepaliDate] = useState<INepaliDate | null>(null);
   const [activeTab, setActiveTab] = useState<TabType>("events");
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isHoliday, setIsHoliday] = useState<boolean>(false);
   useEffect(() => {
-fetchData();
-// fetchData(currentDate);
-  }, [])
-  const fetchData = async () => {
+    fetchData(currentDate);
+  }, [currentDate])
+
+  const fetchData = async (date: Date) => {
     setIsLoading(true);
 
-    // const fetchData = async (date: Date) => {
     try {
-      const dateData = await getNepaliDate();
-      // const dateData = await getNepaliDate(date);
+      const dateData = await getNepaliDate(date);
       if (dateData) {
         console.log("Date Data: ", dateData);
         setNepaliDate(dateData);
+        setIsHoliday(dateData.singleDayData.h);
       }
     } catch (error) {
       console.error("Error fetching Nepali date:", error)
@@ -66,6 +67,7 @@ fetchData();
     }
   }
   const handlePreviousDay = () => {
+    console.log("previous day");
     const previousDay = new Date(currentDate);
     previousDay.setDate(currentDate.getDate() - 1);
     setCurrentDate(previousDay);
