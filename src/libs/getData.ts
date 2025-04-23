@@ -2,7 +2,7 @@
 export default async function getData(nepDate: string, nepMonth: string, nepYear: string) {
     try {
         // Dynamically construct the URL
-        const url = `https://steins07.github.io/bs-date-data/data/${nepYear}/${nepMonth}.json`;
+        const url = `https://romusshrestha.github.io/bs-date-data/data/${nepYear}/${nepMonth}.json`;
 
         // Fetch the JSON data
         const response = await fetch(url);

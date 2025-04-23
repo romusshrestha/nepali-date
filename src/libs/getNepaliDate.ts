@@ -4,7 +4,7 @@ import getBsMonth from "./getBsMonth";
 import getData from "./getData";
 
 // export default async function getNepaliDate() {
-export default async function getNepaliDate(date: Date=new Date()) {
+export default async function getNepaliDate(date: Date = new Date()) {
     try {
         // date for AD calendar
         const enYear = date.getFullYear().toString();
@@ -22,21 +22,24 @@ export default async function getNepaliDate(date: Date=new Date()) {
         // get english month in string ; eg: Janurary
         const englishMonth = date.toLocaleDateString("en-US", { month: "long" });
 
+        const cleanedBsMonth = bsMonth[0] === "0" ? bsMonth.slice(1) : bsMonth
+
         // fetch tithi, holidays and events fromapi
-        const {singleDayData, bratabandhaData, marriageData} = await getData(
+        console.log(date.getDate().toString(), cleanedBsMonth, bsYear)
+        const { singleDayData, bratabandhaData, marriageData } = await getData(
             date.getDate().toString().padStart(2, "0"),
-            bsMonth,
+            cleanedBsMonth,
             bsYear
         )
 
-        return { 
-            bsDate, 
-            enYear, 
-            enMonth, 
-            enDate, 
-            englishMonth, 
-            nepaliDay, 
-            nepaliMonth, 
+        return {
+            bsDate,
+            enYear,
+            enMonth,
+            enDate,
+            englishMonth,
+            nepaliDay,
+            nepaliMonth,
             singleDayData,
             bratabandhaData,
             marriageData
